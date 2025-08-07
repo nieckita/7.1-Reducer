@@ -1,3 +1,4 @@
+import NumberFlow from '@number-flow/react';
 import { getFormattedPrice, getProductWithId } from '../helpers';
 import BasketItem from './BasketItem';
 
@@ -6,11 +7,13 @@ export default function BasketDisplay({ basket, basketDispatch }) {
 
 	const totalPrice = basket.reduce((total, { id, amount }) => {
 		const product = getProductWithId(id);
+
 		if (!product) {
 			return total;
 		}
 		return total + product.price * amount;
 	}, 0);
+	getFormattedPrice(totalPrice);
 
 	return (
 		<section className="basket">
@@ -35,7 +38,16 @@ export default function BasketDisplay({ basket, basketDispatch }) {
 
 			{basket.length > 0 && (
 				<output className="basket__total">
-					{getFormattedPrice(totalPrice)}
+					<NumberFlow
+						value={totalPrice}
+						format={{
+							style: 'currency',
+							currency: 'EUR',
+							trailingZeroDisplay: 'stripIfInteger',
+							locale: 'de-DE',
+						}}
+					/>
+
 					{/* Hier den Gesamtpreis anzeigen. Wenn der Warenkob leer ist,
 				soll das output-Element ausgeblendet werden. */}
 				</output>

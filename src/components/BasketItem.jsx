@@ -1,3 +1,4 @@
+import NumberFlow from '@number-flow/react';
 import { getFormattedPrice, getProductWithId } from '../helpers';
 
 export default function BasketItem({ id, amount, basketDispatch }) {
@@ -9,12 +10,27 @@ export default function BasketItem({ id, amount, basketDispatch }) {
 
 	const { title, price } = product;
 
+	const priceGesamt = price * amount;
+
+	const formattedPrice = getFormattedPrice(priceGesamt);
+	console.log(formattedPrice);
+
 	return (
 		<li className="basket-item">
-			<span className="basket-item__amount">{amount} &times; </span>
+			<span className="basket-item__amount">
+				<NumberFlow value={amount} /> &times;{' '}
+			</span>
 			<span className="basket-item__title">{title}: </span>
 			<span className="basket-item__price">
-				{getFormattedPrice(price * amount)}
+				<NumberFlow
+					value={priceGesamt / 100}
+					format={{
+						style: 'currency',
+						currency: 'EUR',
+						trailingZeroDisplay: 'stripIfInteger',
+						locale: 'de-DE',
+					}}
+				/>
 				{/* Hier den Gesamtpreis für das Produkt anzeigen, also z.B. den
         Preis für 5 Tomaten, wenn 5 Stück im Warenkorb liegen. */}
 			</span>
