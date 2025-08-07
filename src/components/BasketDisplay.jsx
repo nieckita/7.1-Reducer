@@ -39,7 +39,7 @@ export default function BasketDisplay({ basket, basketDispatch }) {
 			{basket.length > 0 && (
 				<output className="basket__total">
 					<NumberFlow
-						value={totalPrice}
+						value={totalPrice / 100}
 						format={{
 							style: 'currency',
 							currency: 'EUR',
